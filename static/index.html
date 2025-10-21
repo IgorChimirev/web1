@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Чимирев Чимирев P3222</title>
+    <style>
+        /* Modern CSS Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #2d3748;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .header h2 {
+            font-size: clamp(20px, 4vw, 28px);
+            font-weight: 600;
+            color: #2d3748;
+            letter-spacing: 0.5px;
+        }
+
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .input-side, .graph-side, .results-side {
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .input-side {
+            flex: 1 1 300px;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .graph-results-container {
+            flex: 3 1 700px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .graph-side {
+            flex: 1;
+            min-height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .results-side {
+            flex: 1;
+            min-height: 300px;
+            overflow: hidden; /* Изменено для поддержки скролла таблицы */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .table-container {
+            overflow-y: auto; /* Добавлен вертикальный скролл */
+            max-height: 400px; /* Ограничиваем высоту таблицы */
+            border-radius: 8px;
+            margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .shrek {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 12px;
+            margin: 0 auto 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: block;
+        }
+
+        .shrek:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group p {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #4a5568;
+        }
+
+        .radio-group {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 5px;
+            background: #f7fafc;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .radio-group label:hover {
+            background: #edf2f7;
+        }
+
+        input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        input[type="radio"]:checked + span {
+            color: #4299e1;
+            font-weight: 600;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            background: #f7fafc;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            margin-top: 5px;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+        }
+
+        input[type="text"]::placeholder {
+            color: #a0aec0;
+        }
+
+        #send-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(66, 153, 225, 0.3);
+            margin-top: auto;
+        }
+
+        #send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(66, 153, 225, 0.4);
+        }
+
+        #send-btn:active {
+            transform: translateY(0);
+        }
+
+        .input-log {
+            margin-top: 15px;
+            min-height: 20px;
+            color: #e53e3e;
+            font-size: 14px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f7fafc;
+        }
+
+        tr:hover {
+            background-color: #ebf8ff;
+        }
+
+        svg {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            aspect-ratio: 1/1;
+        }
+
+        .dot {
+            transition: 1.5s;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        /* Responsive adjustments */
+        @media (min-width: 992px) {
+            .graph-results-container {
+                flex-direction: row;
+            }
+
+            .graph-side, .results-side {
+                flex: 1;
+                min-height: 650px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+                gap: 15px;
+            }
+
+            .input-side, .graph-side, .results-side {
+                padding: 15px;
+            }
+
+            .radio-group {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .header {
+                padding: 15px;
+            }
+        }
+
+        /* Custom animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .input-side, .graph-side, .results-side {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h2>Чимирев Игорь Р3215, вариант 468013</h2>
+    </div>
+
+    <div class="main-content">
+        <div class="input-side">
+            <form>
+                <div class="input-group">
+                    <p>Выберите X:</p>
+                    <div id="coord-x" class="radio-group">
+                        <label><input type="radio" name="x" value="-2"><span>-2</span></label>
+                        <label><input type="radio" name="x" value="-1.5"><span>-1.5</span></label>
+                        <label><input type="radio" name="x" value="-1"><span>-1</span></label>
+                        <label><input type="radio" name="x" value="-0.5"><span>-0.5</span></label>
+                        <label><input type="radio" name="x" value="0"><span>0</span></label>
+                        <label><input type="radio" name="x" value="0.5"><span>0.5</span></label>
+                        <label><input type="radio" name="x" value="1"><span>1</span></label>
+                        <label><input type="radio" name="x" value="1.5"><span>1.5</span></label>
+                        <label><input type="radio" name="x" value="2"><span>2</span></label>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="coord-y">Введите Y:</label>
+                    <input type="text" id="coord-y" name="coord-y" placeholder="От -3 до 5" />
+                </div>
+
+                <div class="input-group">
+                    <label for="coord-r">Введите R:</label>
+                    <input type="text" id="coord-r" name="coord-r" placeholder="От 2 до 5" />
+                </div>
+
+                <button id="send-btn" type="submit">Отправить</button>
+
+                <div class="input-log" id="input-log">
+                    <!--Поле для вывода ошибок при вводе-->
+                </div>
+            </form>
+        </div>
+
+        <div class="graph-results-container">
+            <div class="graph-side">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet">
+                    <circle cx="300" cy="300" class="dot" id="dot" r="5" visibility="visible" stroke="black" fill="black"></circle>
+                    <line stroke="gray" x1="0" x2="600" y1="300" y2="300" />
+                    <line stroke="gray" x1="300" x2="300" y1="0" y2="600" />
+                    <polygon points="300,0 294,15 306,15" stroke="white" />
+                    <polygon points="600,300 585,306 585,294" stroke="white" />
+
+                    <line stroke="gray" x1="400" x2="400" y1="310" y2="290" />
+                    <line stroke="gray" x1="500" x2="500" y1="310" y2="290" />
+                    <line stroke="gray" x1="200" x2="200" y1="310" y2="290" />
+                    <line stroke="gray" x1="100" x2="100" y1="310" y2="290" />
+                    <line stroke="gray" x1="290" x2="310" y1="100" y2="100" />
+                    <line stroke="gray" x1="290" x2="310" y1="200" y2="200" />
+                    <line stroke="gray" x1="290" x2="310" y1="400" y2="400" />
+                    <line stroke="gray" x1="290" x2="310" y1="500" y2="500" />
+
+                    <text x="385" y="330">R/2</text>
+                    <text x="495" y="330">R</text>
+                    <text x="90" y="330">-R</text>
+                    <text x="180" y="330">-R/2</text>
+                    <text x="255" y="205">R/2</text>
+                    <text x="270" y="105">R</text>
+                    <text x="250" y="405">-R/2</text>
+                    <text x="265" y="505">-R</text>
+                    <text x="310" y="15">Y</text>
+                    <text x="585" y="290">X</text>
+
+                    <rect x="100" y="300" width="200" height="100" fill="#0a0eff" fill-opacity="0.1" stroke="#0c0fff"/>
+                    <polygon points="200,300 300,300 300,100" fill="#0a0eff" fill-opacity="0.1" stroke="#0c0fff"/>
+                    <path d="M 300 400 A 100 100, 0, 0, 0, 400 300 L 300 300 Z" fill="#0a0eff" fill-opacity="0.1" stroke="#0c0fff" />
+                </svg>
+            </div>
+
+            <div class="results-side">
+                <h3 style="margin-bottom: 10px; text-align: center;">Результаты проверки</h3>
+                <div class="table-container">
+                    <table class="res-table" id="res-table">
+                        <tr>
+                            <th>Попали</th>
+                            <th>X</th>
+                            <th>Y</th>
+                            <th>R</th>
+                            <th>Время работы (мс)</th>
+                            <th>Время</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script type="module" src="main.js"></script>
+</body>
+</html>
